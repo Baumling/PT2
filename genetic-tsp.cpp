@@ -162,9 +162,15 @@ pair<int,int> evolution(vector<vector<int>>& tourSet, bool elite) {
     statistics.first = F[0].first; // tour with shortest tour length
     statistics.second = F[M-1].first; // tour with largest tour length
     
-	// ToDo: compute crossover of two best tours and replace worst tour by the crossover. Use the crossover method.
+	// compute crossover of two best tours and replace worst tour by the crossover. Use the crossover method.
+	crossover(tourSet[F[0].first], tourSet[F[1].first], tourSet[F[M-1].first]);
 
-	// ToDo: Mutate all other tours (ignore two best trips and the former worst trip (replaced)). Use the mutate method.
+	// Mutate all other tours (ignore two best trips and the former worst trip (replaced)). Use the mutate method.
+	for(int i = 0; i < M; i++) {
+		if(i != F[0].first && i != F[1].first && i != F[M-1].first) {
+			mutate(tourSet(i));
+		}
+	}
 
 	return statistics;
  }
