@@ -141,11 +141,13 @@ void mutate(vector<int>& tour) {
 
 }
 
-// ToDo: Create a sorted sequence of (tour length, tour index) pairs (ascending order, i.e., the shorter, the better)
+// Create a sorted sequence of (tour length, tour index) pairs (ascending order, i.e., the shorter, the better)
 vector<pair<int,int>> fitness(vector<vector<int>>& tourSet) {
     vector<pair<int,int>> F(M);
-
-	//ToDo
+	for(int i = 0; i < M; i++) {
+		F.push_back(std::make_pair(i, tourLength(tourSet[i]))); 
+	}
+	std::sort (F.begin(), F.end(), [](std::pair<int,int> a, std::pair<int,int> b){a.second < b.second});
 
     return F;
 }
