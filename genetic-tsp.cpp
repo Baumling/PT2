@@ -124,10 +124,12 @@ void insertCity(vector<int>& tour, int city) {
 
 // Generate the tours as initial population and store them in the tour set. Hint: use std::shuffle.
 void generateTours(vector< vector<int> >& tourSet) {
-	for(int i = 0; i < N; i++) {
-		tourSet.push_back(i);
+	for(auto tour : tourSet) {
+		for(int i = 0; i < N; i++) {
+			tour[i] = i;
+		}
+		std::shuffle(tour.begin(), tour.end());
 	}
-	std::shuffle(tourSet.begin(), tourSet.end());
 }
 
 // ToDo: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
