@@ -101,6 +101,7 @@ int cityDistance(int city1, int city2) {
 // calculate the length for a given tour, assuming a round trip
 int tourLength(const vector<int>& T) {
 	//ToDo : useful assertion check
+	assert(validTour);
 	int result = 0;
 	for(int i = 0; i < N; i++) {
 		result += cityDistance(T[i], T[(i+1)%N]);
@@ -118,7 +119,10 @@ void printTourCityNames(const vector<int>& T) {
 
 // inserts a city in an incomplete tour, using the next free slot
 void insertCity(vector<int>& tour, int city) {
-	tour.push_back(city);	
+	int i;
+	for(i = 0; tour[i] != -1; i++)
+		;
+	tour[i] = city;	
 }
 
 
@@ -129,12 +133,27 @@ void generateTours(vector< vector<int> >& tourSet) {
 			tour[i] = i;
 		}
 		std::shuffle(tour.begin(), tour.end());
+		assert(validTour(tour));
 	}
 }
 
-// ToDo: take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
+// take two (good) parent tours, and build a new one by the gens of both. Hint: Use rand, findCity and insertCity.
 void crossover(const vector<int>& parent1, const vector<int>& parent2, vector<int>& child) {
+	int sublength = std::ceil(N / 2);
+	int substart = frand(0, N-1 - sublength);
+	int insertPos = frand(0, N-1 - sublength);
+	
+	child = NullTour;
+	for(int i = 0; i < sublength; i++) {
+		child[i + insertPos] = parent1[i + substart];
+	}
 
+	for(auto city : parent2) {
+		if(!findCity(child, city)) {
+			insertCity(child, city);
+		}
+	}
+	assert(validTour(child));
 }
 
 // ToDo: Mutate a given tour, swapping cities randomly based on probability. Hint: Use frand and std::swap.
