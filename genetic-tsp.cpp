@@ -132,7 +132,8 @@ void generateTours(vector< vector<int> >& tourSet) {
 		for(int i = 0; i < N; i++) {
 			tour[i] = i;
 		}
-		std::shuffle(tour.begin(), tour.end());
+		auto engine = std::default_random_engine{};
+		std::shuffle(tour.begin(), tour.end(), engine);
 		assert(validTour(tour));
 	}
 }
@@ -168,7 +169,7 @@ vector<pair<int,int>> fitness(vector<vector<int>>& tourSet) {
 	for(int i = 0; i < M; i++) {
 		F.push_back(std::make_pair(i, tourLength(tourSet[i]))); 
 	}
-	std::sort (F.begin(), F.end(), [](std::pair<int,int> a, std::pair<int,int> b){a.second < b.second});
+	std::sort (F.begin(), F.end(), [](std::pair<int,int> a, std::pair<int,int> b){return a.second < b.second;});
 
     return F;
 }
@@ -189,7 +190,7 @@ pair<int,int> evolution(vector<vector<int>>& tourSet, bool elite) {
 	// Mutate all other tours (ignore two best trips and the former worst trip (replaced)). Use the mutate method.
 	for(int i = 0; i < M; i++) {
 		if(i != F[0].first && i != F[1].first && i != F[M-1].first) {
-			mutate(tourSet(i));
+			mutate(tourSet[i]);
 		}
 	}
 
